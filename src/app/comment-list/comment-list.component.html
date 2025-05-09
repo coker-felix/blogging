@@ -1,0 +1,24 @@
+<div *ngIf="loading" class="space-y-4 py-4">
+    <div *ngFor="let i of [1, 2, 3]" class="space-y-2">
+      <div class="h-4 w-1/4 animate-pulse rounded bg-muted"></div>
+      <div class="h-3 w-full animate-pulse rounded bg-muted"></div>
+      <div class="h-3 w-3/4 animate-pulse rounded bg-muted"></div>
+    </div>
+  </div>
+  
+  <div *ngIf="!loading && filteredComments.length === 0" class="py-4 text-center text-muted-foreground">
+    {{ searchTerm ? 'No comments found matching "' + searchTerm + '"' : 'No comments yet. Be the first to comment!' }}
+  </div>
+  
+  <div *ngIf="!loading && filteredComments.length > 0" class="space-y-4 py-4">
+    <div *ngFor="let comment of filteredComments" class="rounded-lg border p-4">
+      <div class="flex items-start justify-between">
+        <h4 class="font-medium">{{ comment.name }}</h4>
+      </div>
+      <p class="mt-1 text-sm">{{ comment.body }}</p>
+      <div class="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+        <span>{{ comment.email }}</span>
+        <span *ngIf="comment.createdAt">{{ formatDate(comment.createdAt) }}</span>
+      </div>
+    </div>
+  </div>

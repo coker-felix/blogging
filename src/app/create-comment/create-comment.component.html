@@ -1,0 +1,41 @@
+<form [formGroup]="commentForm" (ngSubmit)="handleSubmit()" class="mb-6 space-y-4 rounded-lg border p-4">
+    <div *ngIf="error" class="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+      {{ error }}
+    </div>
+  
+    <div class="grid gap-4 md:grid-cols-2">
+      <div class="space-y-2">
+        <label for="name" class="text-sm font-medium">Username</label>
+        <input
+          id="name"
+          formControlName="userName"
+          class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          placeholder="Your name"
+        />
+      </div>
+    </div>
+  
+    <div class="space-y-2">
+      <label for="comment" class="text-sm font-medium">Comment</label>
+      <textarea
+        id="comment"
+        formControlName="body"
+        class="h-24 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        placeholder="Write your comment here..."
+      ></textarea>
+    </div>
+  
+    <div class="flex justify-end">
+      <button
+        type="submit"
+        [disabled]="submitting || commentForm.invalid"
+        class="rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-900 disabled:opacity-50"
+      >
+        {{ submitting ? 'Submitting...' : 'Add Comment' }}
+      </button>
+    </div>
+  
+    <p *ngIf="!isOnline" class="text-sm text-amber-500">
+      You're currently offline. Your comment will be saved locally and synced when you're back online.
+    </p>
+  </form>
