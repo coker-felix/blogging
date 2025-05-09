@@ -7,7 +7,7 @@ import { PostsComponent } from './posts/posts.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { CreateEditPostComponent } from './create-edit-post/create-edit-post.component';
 import { SearchComponent } from './search/search.component';
-
+import { PwaUpdateService } from './services/pwa-update.service';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -27,6 +27,8 @@ export class AppComponent {
   selectedPost: Post | null = null;
   isCreating: boolean = false;
   isEditing: boolean = false;
+
+  constructor(private pwaUpdateService: PwaUpdateService) {}
 
   handleCreateNew(): void {
     this.isCreating = true;

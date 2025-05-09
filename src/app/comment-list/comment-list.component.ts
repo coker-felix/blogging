@@ -7,7 +7,7 @@ import { Comment } from '../types/post.interface';
 @Component({
   selector: 'app-comment-list',
   standalone: true,
-  imports: [CommonModule, SyncStatusComponent],
+  imports: [CommonModule, SyncStatusComponent, ],
   templateUrl: './comment-list.component.html',
   styleUrls: ['./comment-list.component.css']
 })
