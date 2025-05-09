@@ -16,6 +16,7 @@ export interface Comment {
   name: string;
   email: string;
   createdAt: string;
+  syncStatus: string;
 }
 
 export interface User {

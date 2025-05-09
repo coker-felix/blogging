@@ -20,6 +20,8 @@ export class CreateCommentComponent {
   isOnline: boolean = navigator.onLine;
 
   constructor(private fb: FormBuilder) {
+    window.addEventListener('online', () => this.isOnline = true);
+    window.addEventListener('offline', () => this.isOnline = false);
     this.commentForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -40,7 +42,8 @@ export class CreateCommentComponent {
         name: this.commentForm.value.name,
         email: this.commentForm.value.email,
         body: this.commentForm.value.body,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        syncStatus: this.isOnline ? 'syncing' : 'pending'
       };
   
       this.onCommentAdded.emit(newComment);

@@ -74,6 +74,24 @@ export class PostsService {
         })
       ).subscribe();
     });
+
+    comments.forEach(comment => {
+      const request = comment.id > 0 ?
+        this.http.put(`${this.API_URL}/comments/${comment.id}`, comment) :
+        this.http.post(`${this.API_URL}/posts/${comment.postId}/comments`, comment);
+  
+      request.pipe(
+        tap(async () => {
+          comment.syncStatus = 'synced';
+          await this.dbService.saveComments([comment]);
+        }),
+        catchError(async () => {
+          comment.syncStatus = 'failed';
+          await this.dbService.saveComments([comment]);
+          return throwError(() => new Error('Comment sync failed'));
+        })
+      ).subscribe();
+    });
   }
 
   private getUsers(): Observable<User[]> {
