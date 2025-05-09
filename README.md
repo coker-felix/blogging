@@ -31,7 +31,7 @@ A Web App built with Angular that allows users to manage blog posts and comments
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone <https://github.com/coker-felix/blogging>
 cd blogging
 ```
 
