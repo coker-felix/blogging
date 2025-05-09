@@ -12,7 +12,7 @@ import { Comment } from '../types/post.interface';
 })
 export class CreateCommentComponent {
   @Input() postId!: number; 
-  @Output() commentAdded = new EventEmitter<Comment>();
+  @Output() onCommentAdded = new EventEmitter<Comment>();
 
   commentForm: FormGroup;
   submitting: boolean = false;
@@ -43,7 +43,7 @@ export class CreateCommentComponent {
         createdAt: new Date().toISOString()
       };
   
-      this.commentAdded.emit(newComment);
+      this.onCommentAdded.emit(newComment);
       this.commentForm.reset();
     } catch (err) {
       console.error('Failed to add comment:', err);

@@ -11,7 +11,7 @@
   </div>
   
   <div *ngIf="!loading && filteredComments.length > 0" class="space-y-4 py-4">
-    <div *ngFor="let comment of filteredComments" class="rounded-lg border p-4">
+    <div *ngFor="let comment of filteredComments" class="rounded-lg border p-4 hover:bg-black hover:text-white">
       <div class="flex items-start justify-between">
         <h4 class="font-medium">{{ comment.name }}</h4>
       </div>

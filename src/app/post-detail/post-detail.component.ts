@@ -1,7 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Post } from '../types/post.interface';
-import { Comment } from '../types/post.interface';
+import { Post, Comment } from '../types/post.interface';
 import { PostsService } from '../services/posts.service';
 import { formatDistanceToNow } from 'date-fns';
 import { SyncStatusComponent } from '../sync-status/sync-status.component';
@@ -13,7 +12,7 @@ import { SearchComponent } from '../search/search.component';
 @Component({
   selector: 'app-post-detail',
   standalone: true,
-  imports: [CommonModule, SyncStatusComponent, LucideAngularModule, CommentListComponent, SearchComponent],
+  imports: [CommonModule, SyncStatusComponent, LucideAngularModule, CommentListComponent, SearchComponent, CreateCommentComponent],
   templateUrl: './post-detail.component.html',
   styleUrls: ['./post-detail.component.css']
 })
@@ -52,19 +51,7 @@ export class PostDetailComponent implements OnInit {
     });
   }
 
-  handleDelete() {
-    if (!this.post) return;
-    this.postsService.deletePost(this.post.id).subscribe({
-      next: () => {
-        // Handle successful deletion
-      },
-      error: (error) => {
-        console.error("Failed to delete post:", error);
-      }
-    });
-  }
-
-  handleCommentAdded(newComment: Comment) {
+  handleCommentAdded(newComment: Comment): void {
     this.comments = [newComment, ...this.comments];
     this.showCommentForm = false;
   }

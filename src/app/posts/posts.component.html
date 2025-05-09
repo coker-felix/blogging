@@ -1,4 +1,5 @@
-<div *ngIf="loading" class="p-4">
+<div class="h-[calc(100vh-8rem)] overflow-y-auto">
+  <div *ngIf="loading" class="p-4">
     <div class="space-y-4">
       <div *ngFor="let i of [1, 2, 3, 4, 5]" class="space-y-2">
         <div class="h-5 w-2/3 animate-pulse rounded bg-muted"></div>
@@ -12,18 +13,22 @@
   </div>
   
   <div *ngIf="!loading && posts.length > 0" class="divide-y">
-    <div *ngFor="let post of filteredPosts"
-         [class.bg-sky-50]="post.id === selectedPostId"
-         class="cursor-pointer p-4 transition-colors hover:bg-gray-50"
+    <div *ngFor="let post of filteredPosts | slice:0:50"
+         [class.bg-black]="post.id === selectedPostId"
+         [class.text-white]="post.id === selectedPostId"
+         class="cursor-pointer p-4 transition-colors hover:bg-black hover:text-white"
          (click)="onSelectPost.emit(post)">
       <div class="flex items-start justify-between">
-        <h3 class="font-medium line-clamp-1">{{ post.title }}</h3>
+        <h3 class="font-medium line-clamp-1 capitalize">{{ post.title }}</h3>
         <app-sync-status [status]="post.syncStatus"></app-sync-status>
       </div>
       <p class="mt-1 text-sm text-muted-foreground line-clamp-2">{{ post.body }}</p>
       <div class="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-        <span>By {{ post.userName || 'Unknown' }}</span>
-        <span *ngIf="post.createdAt">{{ formatDate(post.createdAt)  }} ago</span>
+        <div>
+          <span>By {{ post.userName || 'Unknown' }}</span>
+          <span *ngIf="post.userEmail" class="ml-1 text-gray-500">({{ post.userEmail }})</span>
+        </div>
+        <span *ngIf="post.createdAt">{{ formatDate(post.createdAt) }} ago</span>
       </div>
     </div>
   </div>
@@ -31,3 +36,4 @@
   <div *ngIf="filteredPosts.length === 0" class="p-4 text-center text-muted-foreground">
     No posts found matching "{{ searchTerm }}"
   </div>
+</div>

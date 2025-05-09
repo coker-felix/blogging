@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Post } from '../types/post.interface';
 import { LucideAngularModule,ArrowLeft } from 'lucide-angular';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { PostsService } from '../services/posts.service';
 
 @Component({
   selector: 'app-create-edit-post',
@@ -26,7 +27,8 @@ export class CreateEditPostComponent {
   isOnline: boolean = navigator.onLine;
   readonly ArrowLeft = ArrowLeft;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private postsService: PostsService) {
     window.addEventListener('online', () => this.updateNetworkStatus());
     window.addEventListener('offline', () => this.updateNetworkStatus());
     this.postForm = this.fb.group({
@@ -51,30 +53,34 @@ export class CreateEditPostComponent {
 
   handleSubmit(): void {
     if (this.postForm.invalid) return;
-
+  
     this.submitting = true;
     this.error = '';
-
+  
     try {
-      const { title, body, userName } = this.postForm.value;
-    const savedPost: Post = this.post ? {
-      ...this.post,
-      title,
-      body,
-      userName,
-      syncStatus: this.isOnline ? 'syncing' : 'pending'
-    } : {
-      id: Date.now(),
-      userId: 1,
-      title,
-      body,
-      userName,
-      createdAt: new Date().toISOString(),
-      syncStatus: this.isOnline ? 'syncing' : 'pending'
-    };
-
-    this.onPostSaved.emit(savedPost);
-      this.onBack.emit();
+      const formData = this.postForm.value;
+      const postData = {
+        ...formData,
+        userId: 1,
+        userName: formData.userName || 'Unknown',
+        syncStatus: 'pending'
+      };
+  
+      const request = this.post 
+        ? this.postsService.updatePost({ ...this.post, ...postData })
+        : this.postsService.createPost(postData);
+  
+      request.subscribe({
+        next: (savedPost) => {
+          this.onPostSaved.emit(savedPost);
+          this.onBack.emit();
+        },
+        error: (err) => {
+          console.error('Failed to save post:', err);
+          this.error = 'Failed to save post. Please try again.';
+          this.submitting = false;
+        }
+      });
     } catch (err) {
       console.error('Failed to save post:', err);
       this.error = 'Failed to save post. Please try again.';

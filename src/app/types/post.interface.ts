@@ -4,6 +4,7 @@ export interface Post {
   title: string;
   body: string;
   userName: string;
+  userEmail?: string;
   createdAt?: string;
   syncStatus: string;
 }
@@ -22,12 +23,4 @@ export interface User {
   name: string;
   username: string;
   email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-  };
-  phone: string;
-  website: string;
 }

@@ -1,13 +1,13 @@
 <div class="flex min-h-screen flex-col">
-  <header class="sticky top-0 z-10 border-b bg-background px-4 py-3 md:px-6">
+  <header class="sticky top-0 z-10 border-b bg-black text-white px-4 py-3 md:px-6">
     <div class="flex items-center justify-between">
-      <h1 class="text-xl font-semibold"><a href="/">Blog Dashboard</a></h1>
+      <h1 class="text-xl font-semibold"><a href="/">Aya Blog Dashboard</a></h1>
       <app-network-status />
     </div>
   </header>
 
   <main class="flex flex-1 flex-col md:flex-row">
-    <div [class]="'w-full border-r md:w-1/3 ' + (selectedPost || isCreating ? 'hidden md:block' : '')">
+    <div [class]="'bg-stone-50 w-full border-r md:w-1/3 ' + (selectedPost || isCreating ? 'hidden md:block' : '')">
       <div class="sticky top-[57px] flex flex-col">
         <div class="flex items-center justify-between border-b p-4">
           <h2 class="text-lg font-medium">Posts</h2>

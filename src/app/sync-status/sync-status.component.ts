@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SyncStatusComponent {
   @Input() status: string = '';
+  
 
   getStatusClass(): string {
     switch (this.status.toLowerCase()) {

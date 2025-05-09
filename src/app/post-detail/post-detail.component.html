@@ -1,57 +1,72 @@
 <div class="flex h-full flex-col">
-    <div class="sticky top-[57px] z-10 flex items-center justify-between border-b bg-background p-4">
-      <button
-       (click)="onBack.emit()"
-        class="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
-      >
+  <div
+    class="sticky top-[57px] z-10 flex items-center justify-between border-b bg-white/30 backdrop-blur-sm p-4"
+  >
+    <button
+      (click)="onBack.emit()"
+      class="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
+    >
       <i-lucide [img]="ArrowLeft" class="mr-1 h-4 w-4"></i-lucide>
-        Back to posts
+      Back to posts
+    </button>
+    <div class="flex items-center gap-2">
+      <app-sync-status [status]="post?.syncStatus || ''"></app-sync-status>
+      <button
+        (click)="onEdit.emit()"
+        class="rounded-md bg-secondary p-2 text-secondary-foreground"
+      >
+        <i-lucide [img]="Edit" class="h-4 w-4"></i-lucide>
+        <span class="sr-only">Edit</span>
       </button>
-      <div class="flex items-center gap-2">
-        <app-sync-status [status]="post?.syncStatus || ''"></app-sync-status>
-        <button (click)="onEdit.emit()" class="rounded-md bg-secondary p-2 text-secondary-foreground">
-          <i-lucide [img]="Edit" class="h-4 w-4"></i-lucide>
-          <span class="sr-only">Edit</span>
-        </button>
-        <button (click)="handleDelete()" class="rounded-md bg-destructive p-2 text-destructive-foreground">
-          <i-lucide [img]="Trash" class="h-4 w-4"></i-lucide>
-          <span class="sr-only">Delete</span>
-        </button>
-      </div>
-    </div>
-    <div class="overflow-auto p-4 md:p-6">
-      <article class="mx-auto max-w-3xl">
-        <header class="mb-6">
-          <h1 class="mb-2 text-2xl font-bold md:text-3xl">{{ post?.title }}</h1>
-          <div class="flex items-center text-sm text-muted-foreground">
-            <span>By {{ post?.userName || "Unknown" }}</span>
-            <span *ngIf="post?.createdAt" class="mx-2">•</span>
-            <span *ngIf="post?.createdAt">{{ formatDate(post?.createdAt) }}</span>
-          </div>
-        </header>
-        <div class="prose max-w-none dark:prose-invert">
-          <p class="whitespace-pre-line">{{ post?.body }}</p>
-        </div>
-        <div class="mt-8 border-t pt-6">
-          <div class="mb-4">
-            <div class="flex items-center justify-between">
-              <h2 class="text-xl font-semibold">Comments ({{ filteredComments.length }})</h2>
-              <button (click)="showCommentForm = !showCommentForm" class="text-sm font-medium text-primary">
-                {{ showCommentForm ? "Cancel" : "Add Comment" }}
-              </button>
-            </div>
-            <div class="mt-4">
-              <app-search (onSearch)="setCommentSearchTerm($event)"></app-search>
-            </div>
-          </div>
-          
-          <app-comment-list 
-            [comments]="comments"
-            [loading]="loading"
-            [searchTerm]="commentSearchTerm"
-            [postId]="post?.id">
-          </app-comment-list>
-        </div>
-      </article>
     </div>
   </div>
+  <div class="overflow-auto p-4 md:p-6">
+    <article class="mx-auto max-w-3xl">
+      <header class="mb-6">
+        <h1 class="mb-2 text-2xl font-bold md:text-3xl capitalize">
+          {{ post?.title }}
+        </h1>
+        <div class="flex items-center text-sm text-muted-foreground">
+          <span>By {{ post?.userName || "Unknown" }}</span>
+          <span *ngIf="post?.createdAt" class="mx-2">•</span>
+          <span *ngIf="post?.createdAt">{{ formatDate(post?.createdAt) }}</span>
+        </div>
+      </header>
+      <div class="prose max-w-none dark:prose-invert">
+        <p class="whitespace-pre-line">{{ post?.body }}</p>
+      </div>
+      <div class="mt-8 border-t pt-6">
+        <div class="mb-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold">
+              Comments ({{ filteredComments.length }})
+            </h2>
+            <button
+              (click)="showCommentForm = !showCommentForm"
+              class="text-sm font-medium text-primary"
+            >
+              {{ showCommentForm ? "Cancel" : "Add Comment" }}
+            </button>
+          </div>
+          <app-create-comment
+            *ngIf="showCommentForm && post"
+            [postId]="post.id"
+            (onCommentAdded)="handleCommentAdded($event)"
+          >
+          </app-create-comment>
+          <div class="mt-4">
+            <app-search (onSearch)="setCommentSearchTerm($event)"></app-search>
+          </div>
+        </div>
+
+        <app-comment-list
+          [comments]="comments"
+          [loading]="loading"
+          [searchTerm]="commentSearchTerm"
+          [postId]="post?.id"
+        >
+        </app-comment-list>
+      </div>
+    </article>
+  </div>
+</div>

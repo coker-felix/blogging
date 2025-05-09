@@ -24,7 +24,6 @@ import { SearchComponent } from './search/search.component';
 export class AppComponent {
   searchTerm: string = '';
   selectedPostId?: number;
-  // selectedPost?: Post;
   selectedPost: Post | null = null;
   isCreating: boolean = false;
   isEditing: boolean = false;
@@ -41,7 +40,6 @@ export class AppComponent {
   handlePostSelect(post: Post): void {
     this.selectedPost = post;
     this.selectedPostId = post.id;
-
   }
 
   handleBack(): void {
